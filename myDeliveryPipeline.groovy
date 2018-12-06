@@ -1,54 +1,43 @@
 
 #!/usr/bin/env groovy
 def call(Map pipelineParams) {
-
     pipeline {
-        agent any
-        stages {
-            stage('checkout git') {
-                steps {
-                    git branch: pipelineParams.branch, credentialsId: 'GitCredentials', url: pipelineParams.scmUrl
-                }
-            }
+  agent any
+stages {
+stage('Checkout'){
+  steps{
+  checkout([$class: 'GitSCM',
+            branches: [[name: env.BRANCH_NAME]],
+           extensions: [[$class: 'CleanBeforeCheckout']],
+                         userRemoteConfigs: [[url: env.REPO_NAME]] 
+                        ])
+  }
+}
+stage('Build'){
+  steps {
+    echo 'building'
+    sh 'npm install'
+  }
+}
+stage('Test'){ steps {
+    echo 'Testing'
+  
+  }
+  
+}
+stage('Publish') {
+  steps {
+    
+    sh '''#!/bin/bash -el
+    echo 'publishing'
+   
+    docker build -t adilforms/the-example-app.nodejs .
+         docker login --username adilforms --password Rimsha@548
+    docker push adilforms/the-example-app.nodejs   
+    '''
+  }
+}}
+}
 
-            stage('build') {
-                steps {
-                    sh 'mvn clean package -DskipTests=true'
-                }
-            }
-
-            stage ('test') {
-                steps {
-                    parallel (
-                        "unit tests": { sh 'mvn test' },
-                        "integration tests": { sh 'mvn integration-test' }
-                    )
-                }
-            }
-
-            stage('deploy developmentServer'){
-                steps {
-                    deploy(pipelineParams.developmentServer, pipelineParams.serverPort)
-                }
-            }
-
-            stage('deploy staging'){
-                steps {
-                    deploy(pipelineParams.stagingServer, pipelineParams.serverPort)
-                }
-            }
-
-            stage('deploy production'){
-                steps {
-                    deploy(pipelineParams.productionServer, pipelineParams.serverPort)
-                }
-            }
-        }
-        post {
-            failure {
-                mail to: pipelineParams.email, subject: 'Pipeline failed', body: "${env.BUILD_URL}"
-            }
-        }
-    }
 }
 
