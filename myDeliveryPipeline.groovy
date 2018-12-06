@@ -6,11 +6,14 @@ def call(Map pipelineParams) {
 stages {
 stage('Checkout'){
   steps{
-  checkout([$class: 'GitSCM',
+/*
+      checkout([$class: 'GitSCM',
             branches: [[name: env.BRANCH_NAME]],
            extensions: [[$class: 'CleanBeforeCheckout']],
                          userRemoteConfigs: [[url: env.REPO_NAME]] 
                         ])
+  */
+      checkout([$class:'GitSCM', branches: "**"])
   }
 }
 stage('Build'){
