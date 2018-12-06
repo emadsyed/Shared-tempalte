@@ -1,6 +1,5 @@
 
-vars/myDeliveryPipeline.groovy
-
+#!/usr/bin/env groovy
 def call(Map pipelineParams) {
 
     pipeline {
