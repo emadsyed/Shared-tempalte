@@ -1,4 +1,4 @@
-def Build-Dockerimage(){
+def build-Dockerimage(){
  sh '''#!/bin/bash -el
     echo 'publishing'
    
