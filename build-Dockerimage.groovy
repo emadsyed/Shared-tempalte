@@ -1,4 +1,4 @@
-def build-Dockerimage(){
+def call(Map config) {
  sh '''#!/bin/bash -el
     echo 'publishing'
    
