@@ -25,7 +25,8 @@ stage('Build'){
 }
 stage('Test'){ steps {
     echo 'Testing'
-    echo 'env.GIT_COMMIT'
+    Buildid: env.GIT_COMMIT
+    echo $Buildid
   
   }
   
