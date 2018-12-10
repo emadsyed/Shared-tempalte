@@ -25,6 +25,7 @@ stage('Build'){
 }
 stage('Test'){ steps {
     echo 'Testing'
+    echo 'env.GIT_COMMIT'
   
   }
   
