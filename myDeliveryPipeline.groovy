@@ -20,6 +20,7 @@ stage('Build'){
   steps {
     echo 'building'
     sh 'npm install'
+       docker build -t adilforms/the-example-app.nodejs .
   }
 }
 stage('Test'){ steps {
