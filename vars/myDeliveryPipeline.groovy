@@ -24,7 +24,7 @@ stage('Build'){
   steps {
     echo 'building'
       sh '''#!/bin/bash -el
-   WORKDIR /app
+   mkdir /app
 COPY package.json /app
 RUN npm install
 copy . /app
