@@ -33,6 +33,7 @@ stage('Publish') {
   steps {
 
     echo 'publishing'
+       docker push adilforms/the-example-app.nodejs:latest
    
  
   }
