@@ -1,6 +1,10 @@
 def call(Map config) {
     pipeline {
-  agent any
+        agent {
+            docker {
+                image 'node:7'
+            }
+        }
 stages {
 stage('Checkout'){
   steps{
@@ -19,8 +23,14 @@ stage('Checkout'){
 stage('Build'){
   steps {
     echo 'building'
-    sh 'npm install'
-      sh 'docker build -t adilforms/the-example-app.nodejs .'
+      sh '''#!/bin/bash -el
+   WORKDIR /app
+COPY package.json /app
+RUN npm install
+copy . /app
+CMD node myapp.js
+EXPOSE 3009
+      '''
   }
 }
 stage('Test'){ steps {
