@@ -23,19 +23,14 @@ stage('Checkout'){
 stage('Build'){
   steps {
     echo 'building'
-      sh '''#!/bin/bash -el
-   docker WORKDIR /app
-COPY package.json /app
-RUN npm install
-copy . /app
-CMD node myapp.js
-EXPOSE 3009
-      '''
+   sh 'npm install'
   }
 }
 stage('Test'){ steps {
     echo 'Testing'
-    
+     sh "git rev-parse HEAD > .git/commit-id"
+        def commit_id = readFile('.git/commit-id').trim()
+        println commit_id
   
   }
   
